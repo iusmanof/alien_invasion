@@ -25,13 +25,7 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.ship.update()
-            self.bullets.update()
-
-            for bullet in self.bullets.copy():
-                if bullet.rect.bottom <= 0:
-                    self.bullets.remove(bullet)
-                print(len(self.bullets))
-
+            self._update_bullets()
             self._update_screen()
         
             pygame.display.flip()
@@ -74,6 +68,13 @@ class AlienInvasion:
             new_bullet  = Bullet(self)
             self.bullets.add(new_bullet)
 
+    def _update_bullets(self):
+        self.bullets.update()
+        
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
+            print(len(self.bullets))
 
 if __name__ == "__main__":
     ai = AlienInvasion()
