@@ -1,2 +1,3 @@
 # alien_invasion
-game
+game Alien Invasion
+
