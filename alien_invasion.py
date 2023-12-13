@@ -7,6 +7,7 @@ from bullet import Bullet
 from alien import Alien
 from game_stats import GameStats
 from button import Button
+from scoreboard import Scoreboard
 
 class AlienInvasion:
 
@@ -22,6 +23,7 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
 
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
 
         self.bg_color = self.settings.bg_color
         self.ship = Ship(self)
@@ -82,6 +84,8 @@ class AlienInvasion:
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
         
+        self.sb.show_score()
+
         if not self.stats.game_active:
             self.play_button.draw_button()
 
@@ -110,6 +114,15 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+
+            self.stats.level += 1
+            self.sb.prep_level()
+
+        if collisions:
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
+            self.sb.prep_score()
+            self.sb.check_high_score()
 
     def _create_fleet(self):
         alien = Alien(self)
@@ -191,7 +204,9 @@ class AlienInvasion:
 
             pygame.mouse.set_visible(False)
             self.settings.initialize_dynamic_settings()
-        
+            self.sb.prep_score()
+
+            self.sb.prep_level()
        
 
 
